@@ -1,5 +1,7 @@
 import re
 
+from operator import itemgetter
+
 def displayBots( t, bots, w, h):
     
     print()
@@ -59,7 +61,7 @@ while i < len(data):
     i = i + 1
 
 #-----------------------
-print( bots )
+#print( bots )
 print()
 
 width = 101 #11
@@ -73,9 +75,11 @@ print()
 
 displayBots( 0, bots, width, height)
 
+
 # move bots 100 seconds
 t = 1
-while t <= 100:
+while t <= 20000:
+
     i = 0
     while i < len(bots):
         #move bot
@@ -83,18 +87,33 @@ while t <= 100:
         bots[i][1] = (bots[i][1] + bots[i][3]) % height
         i += 1
 
-    displayBots( t, bots, width, height)
+    temp = sorted(bots, key=itemgetter(0,1))
+    show = False
+    j = 0
+    while j < len(temp)-6 and show == False:
+        if temp[j][0] == temp[j+1][0] == temp[j+2][0] == temp[j+3][0] == temp[j+4][0] == temp[j+5][0] == temp[j+6][0]:
+            cv = temp[j][1]
+            if temp[j+1][1] == (cv+1) and temp[j+2][1] == (cv+2) and temp[j+3][1] == (cv+3) and temp[j+4][1] == (cv+4) and temp[j+5][1] == (cv+5)and temp[j+6][1] == (cv+6): 
+                show = True
+        j += 1 
+
+    if show == True:
+        displayBots( t, bots, width, height)
+       
     t += 1
 
+
+
+"""
 # count bots in quadrants
 q1 = 0
 q2 = 0
 q3 = 0
 q4 = 0
 """
-q1 | q2
----+---
-q4 | q3
+#q1 | q2
+#---+---
+#q4 | q3
 
 """
 for bot in bots:
@@ -120,3 +139,7 @@ part1 = q1 * q2 * q3 * q4
 print()    
 print( " Part I: ", part1 ) #232253028 first try :-)
 print( "Part II: ", part2 ) 
+"""
+
+#tree at 8179
+
