@@ -1,0 +1,107 @@
+import re
+import numpy as np
+
+def lowCost( a_x, a_y, b_x, b_y, p_x, p_y):
+    
+    found = False
+    cost = -1
+
+    for a in range(0,101):
+        for b in range(0,101):
+            if a * a_x  + b * b_x == p_x:
+                if a * a_y  + b * b_y == p_y:
+                    temp_cost = a * 3 + b
+                    if found == False:
+                        cost = temp_cost
+                    elif temp_cost < cost:
+                        cost = temp_cost
+                    found = True    
+
+    if not found:
+        print("*** Not Found ***")
+    
+    return cost
+
+"""
+Button A: X+94, Y+34
+Button B: X+22, Y+67
+Prize: X=8400, Y=5400
+
+The equations  really shouyld be 
+
+Equation 1 is A * 94 + B * 22 = 8400
+Equation 2 is A * 34 + B * 67 = 5400
+COST = 3 * A + B
+"""
+def lowCost2( ax, ay, bx, by, x, y):
+    
+    found = False
+    cost = -1
+
+    # Cramer's rule? .. needed help with map
+    tolerance = .0001
+    A = (bx*y - by*x) / (bx*ay - by*ax)
+    B = (x-ax*A) / bx
+    if abs(A - round(A)) < tolerance and abs(B - round(B)) < tolerance:
+        cost = 3*A + B
+        found = True
+
+    if not found:
+        print("*** Not Found ***")
+    
+    return cost
+
+
+# --- Load Data ------------------------------------------------------------------
+file = open('AOC_2024/day13/day13.txt', 'r')
+# --------------------------------------------------------------------------------
+# $3 for a, $1 fo b
+# 
+
+part1 = 0
+part2 = 0 #cost to win prize
+
+
+# Pattern to match positive or negative integers after + or =
+pattern = r'[\+\=](\d+)'
+
+data = file.readlines()
+i = 0
+while i < len(data):
+    data[i] = data[i].strip()
+
+    # Find all matches in the line
+    temp = re.findall(pattern, data[i].strip())
+    a_x = int(temp[0])
+    a_y = int(temp[1])
+    
+    temp = re.findall(pattern, data[i+1].strip())
+    b_x = int(temp[0])
+    b_y = int(temp[1])
+
+    temp = re.findall(pattern, data[i+2].strip())
+    p_x = int(temp[0])
+    p_y = int(temp[1])
+
+    print( a_x, a_y, b_x, b_y, p_x, p_y)
+
+    cost = lowCost2( a_x, a_y, b_x, b_y, p_x, p_y)
+    if cost != -1:
+        part1 = part1 + cost
+    print( "p1 cost", cost )
+  
+    cost2 = lowCost2( a_x, a_y, b_x, b_y, p_x+10000000000000, p_y+10000000000000)
+    if cost2 != -1:
+        part2 = part2 + cost2
+    print( "p2 cost", cost2 )
+    
+
+
+    # next puzzle
+    i = i + 4
+    print()
+    
+print( " Part I: ", part1 ) 
+print( "Part II: ", part2 ) # 144913377701805 too high, 104015411578548
+
+
