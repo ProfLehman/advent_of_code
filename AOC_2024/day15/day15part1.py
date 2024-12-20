@@ -138,6 +138,6 @@ for m in moves:
     
 print( "Part 1: ", gpsCount( map ) )  #1467421 low
 print()
-print( len(moves) )
+#print( len(moves) )
 #display(map)
 
