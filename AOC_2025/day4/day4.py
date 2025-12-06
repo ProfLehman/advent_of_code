@@ -1,4 +1,6 @@
 
+#Part 1: 1397 - too low
+
 def count_neighbors( m, a, b):
     count = 0
 
@@ -11,8 +13,7 @@ def count_neighbors( m, a, b):
         tc = b + cp[x]
         #print( (tr, tc) )
         if (tr,tc) in m:
-            if m[(tr,tc)] == "@":
-                count = count + 1
+            count = count + 1
         
         x = x + 1
 
@@ -23,7 +24,7 @@ def count_neighbors( m, a, b):
 part1 = 0
 part2 = 0
 
-file = open('AOC_2025/day4/test1.txt', 'r')
+file = open('AOC_2025/day4/test2.txt', 'r')
 
 # build sparse matrix
 data = {}
@@ -31,7 +32,7 @@ data = {}
 r = 0
 line = file.readline().strip()
 while line != "":
-    num_cols = len(line)
+    
 
     c = 0
     for value in line:
@@ -39,6 +40,7 @@ while line != "":
             data[(r,c)] = True
         c = c + 1
 
+    num_cols = c
     r = r + 1
     line = file.readline().strip()
     # loop
@@ -60,16 +62,18 @@ for r in range(0, num_rows):
         else:
             print( ".", end="") 
     print()
-
+print()
 
 for r in range(0, num_rows):
     for c in range(0, num_cols):
-        print( count_neighbors(data, r, c), end="")
-        if count_neighbors(data, r, c) < 4:
-            part1 = part1 + 1
+        
+        if data.get((r,c)) == True:
+            print( count_neighbors(data, r, c), end="")
+            if count_neighbors(data, r, c) < 4:
+                part1 = part1 + 1
+        else:
+            print(".", end="")
     print()
-
-
 
 # --- results ---
 print()
@@ -78,3 +82,4 @@ print("Part 2:", part2)
 print()
 
 #print( count_neighbors(data, 3, 0) )
+
