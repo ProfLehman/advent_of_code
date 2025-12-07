@@ -1,5 +1,5 @@
 
-#Part 1: 1397 - too low
+#Part 1:
 
 def count_neighbors( m, a, b):
     count = 0
@@ -74,6 +74,18 @@ for r in range(0, num_rows):
         else:
             print(".", end="")
     print()
+
+
+change = True
+while change == True:
+    change = False
+    for r in range(0, num_rows):
+        for c in range(0, num_cols):
+            if data.get((r,c)) == True:
+                if count_neighbors(data, r, c) < 4:
+                    part2 = part2 + 1
+                    data.pop((r,c))
+                    change = True
 
 # --- results ---
 print()
